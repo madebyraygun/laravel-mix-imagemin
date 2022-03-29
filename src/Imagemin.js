@@ -14,8 +14,7 @@ class Imagemin {
         return ['copy-webpack-plugin', 'imagemin-webpack-plugin'];
     }
 
-    register(patterns, copyOptions = {}, imageminOptions = {}) {
-        this.patterns = [].concat(patterns);
+    register(copyOptions = {}, imageminOptions = {}) {
         this.copyOptions = copyOptions;
         this.imageminOptions = Object.assign({
             test: /\.(jpe?g|png|gif|svg)$/i,
@@ -25,12 +24,12 @@ class Imagemin {
     webpackPlugins() {
         const ImageminPlugin = require('imagemin-webpack-plugin').default;
         const CopyWebpackPlugin = require('copy-webpack-plugin');
-        let {patterns, copyOptions, imageminOptions} = this;
+        let {copyOptions, imageminOptions} = this;
 
         return [
-            new CopyWebpackPlugin(patterns, copyOptions),
+            new CopyWebpackPlugin(copyOptions),
             new ImageminPlugin(imageminOptions),
-            new ManifestPlugin(patterns),
+            new ManifestPlugin(copyOptions.patterns),
         ];
     }
 }
